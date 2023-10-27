@@ -12,6 +12,7 @@ mod path_variables;
 mod query_params;
 mod user_agent;
 // mod validate_data;
+mod create_tasks;
 
 // use always_errors::always_errors;
 use body_json::body_json;
@@ -24,6 +25,7 @@ use sea_orm::DatabaseConnection;
 use tower_http::cors::{Any, CorsLayer};
 use user_agent::user_agent;
 // use validate_data::validate_data;
+use create_tasks::create_tasks;
 
 pub fn create_routes(dtbase: DatabaseConnection) -> Router {
     let cors = CorsLayer::new()
@@ -40,6 +42,7 @@ pub fn create_routes(dtbase: DatabaseConnection) -> Router {
         .route("/mirror_custom_header", get(custom_header))
         // .route("/always_errors", get(always_errors))
         // .route("/get_json", get(get_json))
+        .route("/tasks", post(create_tasks))
         .layer(cors)
         .layer(Extension(dtbase))
     // .route("/validate_data", post(validate_data))
